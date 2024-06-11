@@ -1,0 +1,39 @@
+package org.example.asm_java5_final.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+@SuppressWarnings("serial")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "Products")
+public class Product  implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private Double price;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "createdate")
+    private Date createDate = new Date();
+    private Boolean available;
+    @ManyToOne
+    @JoinColumn(name = "brandid")
+    Brand brand;
+    private String images;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    List<OrderDetail> orderDetails;
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    List<ProductCategory> productCategories;
+}
